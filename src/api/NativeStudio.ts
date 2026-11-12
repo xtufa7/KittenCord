@@ -61,7 +61,7 @@ function record(compilation: NativeCompilation, loadedAtStartup = false) {
     const plugin = evaluate(compilation);
     const contentType = compilation.project.metadata.contentType ?? "plugin";
     if (contentType !== "plugin") plugin.hidden = true;
-    const status: NativePluginStatus = { id, name: plugin.name, version: compilation.project.metadata.version, contentType, registered: false, running: false, reloadRequired: pluginRequiresRestart(plugin), stages: { registration: "Checking native plugin contract." } };
+    const status: NativePluginStatus = { id, name: plugin.name, version: compilation.project.metadata.version, contentType, registered: false, running: false, reloadRequired: Boolean(plugin.patches?.length) || pluginRequiresRestart(plugin), stages: { registration: "Checking native plugin contract." } };
     registerPluginDefinition(plugin, loadedAtStartup);
     PluginMeta[plugin.name] = { id, userPlugin: true, folderName: `src/userplugins/.studio/${id}` };
     status.stages.webpack = compilation.imports.filter(name => name.startsWith("@webpack")).length ? "Shared webpack bindings linked. Plugin-specific module access is checked by its native start callback." : "No direct webpack import.";

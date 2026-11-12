@@ -1,0 +1,20 @@
+/*
+ * Vencord, a Discord client mod
+ * Copyright (c) 2026 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+.kc-secret-guard {
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    color: var(--text-normal);
+    background: var(--background-secondary);
+}
+
+.kc-secret-guard .kc-pref-group {
+    margin-block: 16px;
+}
+
+.kc-secret-guard .kc-pref-detail {
+    overflow-wrap: anywhere;
+}

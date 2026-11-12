@@ -62,9 +62,11 @@
         "gifuct-js": "^2.1.2",
         "idb": "8.0.3",
         "jsqr": "1.4.0",
+        "mermaid": "^12.3.0",
         "monaco-editor": "^0.55.1",
         "nanoid": "^5.1.16",
         "native-file-system-adapter": "^3.0.1",
+        "qrcode": "1.5.4",
         "virtual-merge": "^1.0.1",
         "yaml-js": "^0.3.1"
     },

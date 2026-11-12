@@ -51,6 +51,7 @@ export async function compileNativeProject(input: unknown, hostDefines: Record<s
                     const path = args.kind === "entry-point" ? requested : posix.normalize(posix.join(posix.dirname(args.importer), requested));
                     const resolved = [path, ...[".ts", ".tsx", ".js", ".jsx", "/index.ts", "/index.tsx", "/index.js", "/index.jsx"].map(extension => path + extension)].find(name => Object.hasOwn(project.files, name));
                     if (!resolved) throw new Error(`Project import was not found: ${args.path}.`);
+                    if (/\.d\.[cm]?ts$/.test(resolved)) throw new Error("Declaration files provide types, not runtime imports.");
                     return { path: resolved, namespace: suffix === "?raw" ? "raw" : resolved.endsWith(".css") ? "managed" : "source" };
                 });
                 builder.onLoad({ filter: /.*/ }, args => {

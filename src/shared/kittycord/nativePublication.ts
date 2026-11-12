@@ -41,16 +41,26 @@ export function validateNativePublication(input: unknown) {
         const path = from.split("/").slice(0, -1);
         for (const segment of name.replace(/\?(?:managed|raw)$/, "").split("/")) { if (segment === "..") { if (!path.length) throw new Error(`${from}: Import escapes the project.`); path.pop(); } else if (segment !== ".") path.push(segment); }
         const requested = path.join("/");
-        if (![requested, ...[".ts", ".tsx", ".js", ".jsx", "/index.ts", "/index.tsx", "/index.js", "/index.jsx"].map(suffix => requested + suffix)].some(value => Object.hasOwn(project.files, value))) throw new Error(`${from}: Project import ${name} was not included.`);
+        const resolved = [requested, ...[".ts", ".tsx", ".js", ".jsx", "/index.ts", "/index.tsx", "/index.js", "/index.jsx"].map(suffix => requested + suffix)].find(value => Object.hasOwn(project.files, value));
+        if (!resolved) throw new Error(`${from}: Project import ${name} was not included.`);
+        if (/\.d\.[cm]?ts$/.test(resolved)) throw new Error(`${from}: Declaration files provide types, not runtime imports.`);
     }
     for (const [name, source] of Object.entries(project.files)) {
         if (name.endsWith(".json")) { JSON.parse(source); continue; }
         if (name.endsWith(".css")) continue;
-        const result = ts.transpileModule(source, { fileName: name, reportDiagnostics: true, compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext, jsx: ts.JsxEmit.React } });
-        const error = result.diagnostics?.find(item => item.category === ts.DiagnosticCategory.Error);
-        if (error) { const position = error.file?.getLineAndCharacterOfPosition(error.start ?? 0); throw new Error(`${name}:${(position?.line ?? 0) + 1}:${(position?.character ?? 0) + 1} ${ts.flattenDiagnosticMessageText(error.messageText, " ")}`); }
         const file = ts.createSourceFile(name, source, ts.ScriptTarget.Latest, true, /x$/.test(name) ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
+        const diagnostics = file.isDeclarationFile ? ts.createProgram([name], { noLib: true, noResolve: true }, {
+            getSourceFile: path => path === name ? file : undefined, getDefaultLibFileName: () => "", writeFile() {}, getCurrentDirectory: () => "", getDirectories: () => [],
+            fileExists: path => path === name, readFile: () => undefined, getCanonicalFileName: path => path, useCaseSensitiveFileNames: () => true, getNewLine: () => "\n"
+        }).getSyntacticDiagnostics(file) : ts.transpileModule(source, { fileName: name, reportDiagnostics: true, compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext, jsx: ts.JsxEmit.React } }).diagnostics;
+        const error = diagnostics?.find(item => item.category === ts.DiagnosticCategory.Error);
+        if (error) { const position = error.file?.getLineAndCharacterOfPosition(error.start ?? 0); throw new Error(`${name}:${(position?.line ?? 0) + 1}:${(position?.character ?? 0) + 1} ${ts.flattenDiagnosticMessageText(error.messageText, " ")}`); }
         function inspect(node: ts.Node) {
+            if (ts.isImportDeclaration(node)) {
+                const clause = node.importClause;
+                if (clause?.isTypeOnly || clause && !clause.name && clause.namedBindings && ts.isNamedImports(clause.namedBindings) && clause.namedBindings.elements.length > 0 && clause.namedBindings.elements.every(item => item.isTypeOnly)) return;
+            }
+            if (ts.isExportDeclaration(node) && (node.isTypeOnly || node.exportClause && ts.isNamedExports(node.exportClause) && node.exportClause.elements.length > 0 && node.exportClause.elements.every(item => item.isTypeOnly))) return;
             if ((ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) && node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)) reference(node.moduleSpecifier.text, name);
             if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || ts.isIdentifier(node.expression) && node.expression.text === "require")) {
                 const argument = node.arguments[0]; if (!argument || !ts.isStringLiteral(argument)) throw new Error(`${name}: Use a literal import path.`); reference(argument.text, name);

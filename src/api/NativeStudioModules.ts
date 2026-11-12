@@ -18,6 +18,7 @@ import * as module26 from "@api/MessageAccessories";
 import * as module27 from "@api/MessageDecorations";
 import * as module25 from "@api/MessageEvents";
 import * as module28 from "@api/MessagePopover";
+import * as networkMonitor from "@api/NetworkMonitor";
 import * as module29 from "@api/NicknameIcons";
 import * as module18 from "@api/Notices";
 import * as module17 from "@api/Notifications";
@@ -25,6 +26,7 @@ import * as module34 from "@api/PluginHealth";
 import * as module14 from "@api/PluginManager";
 import * as module31 from "@api/ProfileCollections";
 import * as module32 from "@api/ProfileSections";
+import * as runtimeInterposition from "@api/RuntimeInterposition";
 import * as module13 from "@api/Settings";
 import * as module16 from "@api/Styles";
 import * as module23 from "@api/UserArea";
@@ -35,10 +37,21 @@ import * as module37 from "@components/Heading";
 import * as module39 from "@components/Icons";
 import * as module40 from "@components/Link";
 import * as module38 from "@components/Paragraph";
+import * as kittenUi from "@components/settings/tabs/KittenUI";
+import * as studioUi from "@components/settings/tabs/kittycordWorkshop/NativeStudio";
 import * as module41 from "@components/Switch";
+import * as coreSettings from "@plugins/_core/settings";
+import type { NativeHostModule } from "@shared/kittycord/nativeStudio";
+import * as studioProjects from "@shared/kittycord/nativeStudio";
+import * as voiceLog from "@shared/kittycord/voiceLog";
 import * as module1 from "@utils/constants";
 import * as module4 from "@utils/css";
 import * as module8 from "@utils/discord";
+import * as delimited from "@utils/kittyDelimited";
+import * as imageInput from "@utils/kittyImageInput";
+import * as pluginPanel from "@utils/kittyPluginPanel";
+import * as qr from "@utils/kittyQr";
+import * as scam from "@utils/kittyScam";
 import * as module7 from "@utils/lazy";
 import * as module2 from "@utils/Logger";
 import * as module3 from "@utils/misc";
@@ -46,9 +59,12 @@ import * as module9 from "@utils/modal";
 import * as module6 from "@utils/react";
 import * as module5 from "@utils/text";
 import * as module0 from "@utils/types";
+import * as web from "@utils/web";
 import * as module10 from "@webpack";
 import * as module11 from "@webpack/common";
 import * as module12 from "@webpack/patcher";
+import * as mermaid from "mermaid";
+import * as qrcode from "qrcode";
 
 export const nativeStudioModules: Record<string, object> = {
     "@api/KittycordVoice": voiceModule,
@@ -96,4 +112,19 @@ export const nativeStudioModules: Record<string, object> = {
     "@components/Switch": module41,
     "@components/Card": module42,
     "@components/ErrorBoundary": module43,
-};
+    "@components/settings/tabs/KittenUI": kittenUi,
+    "@utils/web": web,
+    "@utils/kittyPluginPanel": pluginPanel,
+    "@utils/kittyScam": scam,
+    "@utils/kittyImageInput": imageInput,
+    "@utils/kittyQr": qr,
+    "@utils/kittyDelimited": delimited,
+    "@shared/kittycord/voiceLog": voiceLog,
+    "@api/NetworkMonitor": networkMonitor,
+    "@api/RuntimeInterposition": runtimeInterposition,
+    "@components/settings/tabs/kittycordWorkshop/NativeStudio": studioUi,
+    "@plugins/_core/settings": coreSettings,
+    "@shared/kittycord/nativeStudio": studioProjects,
+    mermaid,
+    qrcode,
+} satisfies Record<NativeHostModule, object>;

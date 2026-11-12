@@ -12,8 +12,12 @@ import { CONTENT_TYPES, type ContentType } from "./presentation";
 export const nativeStudioModules = [
     "@utils/types", "@utils/constants", "@utils/Logger", "@utils/misc", "@utils/css", "@utils/text", "@utils/react", "@utils/lazy", "@utils/discord", "@utils/modal", "@api/KittycordVoice",
     "@webpack", "@webpack/common", "@webpack/patcher", "@api/Settings", "@api/PluginManager", "@api/DataStore", "@api/Styles", "@api/Notifications", "@api/Notices", "@api/Commands", "@api/ContextMenu", "@api/ChatButtons", "@api/HeaderBar", "@api/UserArea", "@api/Badges", "@api/MessageEvents", "@api/MessageAccessories", "@api/MessageDecorations", "@api/MessagePopover", "@api/NicknameIcons", "@api/MemberListDecorators", "@api/ProfileCollections", "@api/ProfileSections", "@api/AudioPlayer", "@api/PluginHealth", "@api/KittycordLegacyStudio",
-    "@components/Button", "@components/Heading", "@components/Paragraph", "@components/Icons", "@components/Link", "@components/Switch", "@components/Card", "@components/ErrorBoundary"
+    "@components/Button", "@components/Heading", "@components/Paragraph", "@components/Icons", "@components/Link", "@components/Switch", "@components/Card", "@components/ErrorBoundary",
+    "@components/settings/tabs/KittenUI", "@utils/web", "@utils/kittyPluginPanel", "@utils/kittyScam", "@utils/kittyImageInput", "@utils/kittyQr", "@utils/kittyDelimited",
+    "@shared/kittycord/voiceLog", "@api/NetworkMonitor", "@api/RuntimeInterposition", "@components/settings/tabs/kittycordWorkshop/NativeStudio", "@plugins/_core/settings", "@shared/kittycord/nativeStudio",
+    "mermaid", "qrcode"
 ] as const;
+export type NativeHostModule = typeof nativeStudioModules[number];
 export interface NativeStudioProject {
     schemaVersion: 1; kind: "kittencord-native-studio";
     metadata: { id: string; name: string; version: string; author: string; contentType?: ContentType; };

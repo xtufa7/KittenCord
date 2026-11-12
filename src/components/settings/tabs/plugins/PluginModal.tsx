@@ -366,7 +366,7 @@ export default function PluginModal({ plugin, onRestartNeeded, onClose, transiti
                                     </Button>
                                 )}
                             </Tooltip>
-                            {!pluginMeta.userPlugin && (
+                            {pluginMeta && !pluginMeta.userPlugin && (
                                 <div className={cl("links")}>
                                     <FavoriteButton
                                         isFavorite={pluginSettings.isFavorite ?? false}

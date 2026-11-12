@@ -155,7 +155,7 @@ function captureStack(): string {
     }
 }
 
-function guessPluginFromStack(stack: string): string {
+export function guessPluginFromStack(stack: string): string {
     try {
         for (const pattern of PLUGIN_PATH_PATTERNS) {
             const match = stack.match(pattern);

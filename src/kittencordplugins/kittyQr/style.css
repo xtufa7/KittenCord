@@ -1,0 +1,22 @@
+/*
+ * Vencord, a Discord client mod
+ * Copyright (c) 2026 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+.vc-kitty-qr {
+    display: grid;
+    gap: 12px;
+}
+
+.vc-kitty-qr pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    max-height: 180px;
+    overflow: auto;
+}
+
+.vc-kitty-qr img {
+    max-width: 100%;
+    height: auto;
+}

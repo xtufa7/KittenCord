@@ -1,0 +1,19 @@
+/*
+ * Vencord, a Discord client mod
+ * Copyright (c) 2026 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+.vc-kitty-bidi {
+    unicode-bidi: plaintext;
+    text-align: start;
+}
+
+.vc-kitty-bidi :where(p, li, blockquote) {
+    unicode-bidi: plaintext;
+    text-align: start;
+}
+
+.vc-kitty-bidi :where(a, code, [data-type="mention"], [data-type="emoji"]) {
+    unicode-bidi: isolate;
+}

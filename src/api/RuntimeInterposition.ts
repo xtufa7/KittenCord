@@ -5,6 +5,7 @@
  */
 
 import { PluginHealth } from "@api/PluginHealth";
+import { findByPropsLazy } from "@webpack";
 import { FluxDispatcher } from "@webpack/common";
 
 import { createInterpositionSlot } from "./RuntimeInterpositionCore";
@@ -17,11 +18,17 @@ export const RuntimeInterpositionPriority = {
 type FluxDispatch = typeof FluxDispatcher.dispatch;
 type FluxSubscribe = typeof FluxDispatcher.subscribe;
 type FluxUnsubscribe = typeof FluxDispatcher.unsubscribe;
+const AuthAccess: { getToken: () => unknown; } = findByPropsLazy("getToken");
 
 export interface RuntimeHookMap {
     requestAnimationFrame: typeof window.requestAnimationFrame;
     cancelAnimationFrame: typeof window.cancelAnimationFrame;
     fetch: typeof window.fetch;
+    xhrOpen: typeof XMLHttpRequest.prototype.open;
+    xhrSend: typeof XMLHttpRequest.prototype.send;
+    WebSocket: typeof window.WebSocket;
+    storageGetItem: typeof Storage.prototype.getItem;
+    authGetToken: typeof AuthAccess.getToken;
     addEventListener: typeof EventTarget.prototype.addEventListener;
     removeEventListener: typeof EventTarget.prototype.removeEventListener;
     ResizeObserver: typeof window.ResizeObserver;
@@ -96,6 +103,11 @@ const slots = {
     requestAnimationFrame: createInterpositionSlot("requestAnimationFrame", () => window.requestAnimationFrame, value => { window.requestAnimationFrame = value; }, nextSequence, notifyOwnershipListeners),
     cancelAnimationFrame: createInterpositionSlot("cancelAnimationFrame", () => window.cancelAnimationFrame, value => { window.cancelAnimationFrame = value; }, nextSequence, notifyOwnershipListeners),
     fetch: createInterpositionSlot("fetch", () => window.fetch, value => { window.fetch = value; }, nextSequence, notifyOwnershipListeners),
+    xhrOpen: createInterpositionSlot("xhrOpen", () => XMLHttpRequest.prototype.open, value => { XMLHttpRequest.prototype.open = value; }, nextSequence, notifyOwnershipListeners),
+    xhrSend: createInterpositionSlot("xhrSend", () => XMLHttpRequest.prototype.send, value => { XMLHttpRequest.prototype.send = value; }, nextSequence, notifyOwnershipListeners),
+    WebSocket: createInterpositionSlot("WebSocket", () => window.WebSocket, value => { window.WebSocket = value; }, nextSequence, notifyOwnershipListeners),
+    storageGetItem: createInterpositionSlot("storageGetItem", () => Storage.prototype.getItem, value => { Storage.prototype.getItem = value; }, nextSequence, notifyOwnershipListeners),
+    authGetToken: createInterpositionSlot("authGetToken", () => AuthAccess.getToken, value => { AuthAccess.getToken = value; }, nextSequence, notifyOwnershipListeners),
     addEventListener: createInterpositionSlot("addEventListener", () => EventTarget.prototype.addEventListener, value => { EventTarget.prototype.addEventListener = value; }, nextSequence, notifyOwnershipListeners),
     removeEventListener: createInterpositionSlot("removeEventListener", () => EventTarget.prototype.removeEventListener, value => { EventTarget.prototype.removeEventListener = value; }, nextSequence, notifyOwnershipListeners),
     ResizeObserver: createInterpositionSlot("ResizeObserver", () => window.ResizeObserver, value => { window.ResizeObserver = value; }, nextSequence, notifyOwnershipListeners),
@@ -111,6 +123,11 @@ function register(registration: RuntimeHookRegistration): () => void {
         case "requestAnimationFrame": return slots.requestAnimationFrame.register(registration.owner, registration.priority, registration.wrap);
         case "cancelAnimationFrame": return slots.cancelAnimationFrame.register(registration.owner, registration.priority, registration.wrap);
         case "fetch": return slots.fetch.register(registration.owner, registration.priority, registration.wrap);
+        case "xhrOpen": return slots.xhrOpen.register(registration.owner, registration.priority, registration.wrap);
+        case "xhrSend": return slots.xhrSend.register(registration.owner, registration.priority, registration.wrap);
+        case "WebSocket": return slots.WebSocket.register(registration.owner, registration.priority, registration.wrap);
+        case "storageGetItem": return slots.storageGetItem.register(registration.owner, registration.priority, registration.wrap);
+        case "authGetToken": return slots.authGetToken.register(registration.owner, registration.priority, registration.wrap);
         case "addEventListener": return slots.addEventListener.register(registration.owner, registration.priority, registration.wrap);
         case "removeEventListener": return slots.removeEventListener.register(registration.owner, registration.priority, registration.wrap);
         case "ResizeObserver": return slots.ResizeObserver.register(registration.owner, registration.priority, registration.wrap);

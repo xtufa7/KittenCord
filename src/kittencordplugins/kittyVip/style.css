@@ -1,0 +1,10 @@
+.vc-kitty-vip {
+    display: inline-flex;
+    padding: 1px 5px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    color: var(--text-brand);
+    background: var(--background-secondary);
+    font-size: 10px;
+    font-weight: 600;
+}
