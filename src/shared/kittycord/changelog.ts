@@ -5,6 +5,12 @@
  */
 
 export const kittycordChangelog = [{
+    id: "0.10.0", date: "2026-11-14", title: "KittenCord 0.10.0", changes: [
+        "32 new KittenCord plugins, all off by default: Secret Guard, Scam Radar, Impostor Check, Panic Key, Undo Send, Bidi, Arabizi, Spell Switch, Drafts, Smart Paste, Diagrams, Glossary, Currency, OCR, QR, Image Compare, Emoji Kitchen, Inbox Zero, VIP, Batch Notify, Shelf, Bot Fold, Voice Scenes, Stream Health, Plugin Firewall, Server Audit, Account Doctor, Dev Cards, Message to Code, Flashcards, Accent Sync and Patch Finder. Find them under Plugins with the KittenCord filter.",
+        "Voice Log can keep a note for each call.",
+        "Fixes from Vencord and Equicord for Discord's latest changes: FakeNitro, Translate, Show Hidden Channels, Web Screen Share Fixes, Better Settings, Better Forwards, Questify, Profile Sets and notice colors."
+    ], limitations: "Windows desktop only. Setup is not code-signed yet, so Windows SmartScreen may warn about it. The new plugins were tested in source; turn them on one at a time and report anything that breaks."
+}, {
     id: "0.9.1", date: "2026-11-07", title: "KittenCord 0.9.1", changes: [
         "Works with Discord's new update. Discord changed how its code is packaged, which left Discord stuck on \"Starting\" with KittenCord installed. Includes Vencord's and Equicord's fixes for this update.",
         "Setup reinstalls KittenCord when Discord restored its own files after an update or repair, instead of refusing."

@@ -1,0 +1,41 @@
+name: Release
+
+# Publishes a tag's release from the files pushed to release-files/<tag>, using the workflow's own token.
+on:
+    push:
+        tags: ["v*"]
+
+permissions:
+    contents: write
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        env:
+            GH_TOKEN: ${{ github.token }}
+            TAG: ${{ github.ref_name }}
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  ref: release-files/${{ github.ref_name }}
+                  path: files
+
+            - name: Check files
+              working-directory: files
+              run: sha256sum -c SHA256SUMS.txt
+
+            - name: Remove older releases (their tags and source stay)
+              run: |
+                  gh release list -R "$GITHUB_REPOSITORY" --limit 100 --json tagName --jq '.[].tagName' | while read -r old; do
+                      [ "$old" = "$TAG" ] || gh release delete "$old" -R "$GITHUB_REPOSITORY" --yes
+                  done
+
+            - name: Publish
+              working-directory: files
+              run: |
+                  gh release create "$TAG" -R "$GITHUB_REPOSITORY" --verify-tag --latest \
+                      --title "KittenCord ${TAG#v}" --notes-file NOTES.md \
+                      $(ls | grep -v -e '^NOTES.md$' -e '^\.git')
+
+            - name: Remove the file branch
+              run: git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" --delete "release-files/$TAG"
