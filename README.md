@@ -13,9 +13,7 @@ About 800 plugins, a Theme Library, Plugin Studio and badges,<br>inside the Disc
 [![Discord](https://img.shields.io/badge/Discord-Join_us-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/7bZ5qKdDR)
 [![License](https://img.shields.io/github/license/xtufa7/KittenCord?style=for-the-badge&color=9fb4ff)](LICENSE)
 
-[**Download for Windows**](https://github.com/xtufa7/KittenCord/releases/latest/download/KittencordSetup.exe) &nbsp;•&nbsp;
-[**Chrome / Edge**](https://github.com/xtufa7/KittenCord/releases/latest/download/KittenCord-Chrome-Edge.zip) &nbsp;•&nbsp;
-[**Firefox**](https://github.com/xtufa7/KittenCord/releases/latest/download/KittenCord-Firefox.zip)
+### [**⬇️ Download KittenCord at kittencord.pages.dev**](https://kittencord.pages.dev/#install)
 
 <img src=".github/assets/settings-plugins.jpg" width="720" alt="The KittenCord Plugins page inside Discord settings">
 
@@ -34,46 +32,32 @@ About 800 plugins, a Theme Library, Plugin Studio and badges,<br>inside the Disc
 
 ### KittenCord originals
 
+36 plugins made for KittenCord, all off until you turn them on. A few of them:
+
 | Plugin | What it does |
 | --- | --- |
-| **Voice Log** | A recap of every call you join: who was there, how long they stayed and when they came and went |
-| **Media Lab** | Crop, resize and convert images locally. Trim and compress videos with FFmpeg |
-| **Mini Dock** | A compact voice window with live participants, speaking indicators and controls |
-| **Time Capsule** | Message reminders with scheduling, snooze and a link back to the conversation |
+| **Secret Guard** | Warns before you send something that looks like a password, token, card number or IBAN |
+| **Scam Radar** | Flags scam phrases, lookalike links and suspicious QR codes |
+| **Undo Send** | Holds your message for a moment so you can take it back |
+| **Arabizi** | Turns Franco-Arabic into Arabic letters, and back |
+| **OCR** | Copies Arabic and English text out of images, on your computer |
+| **Voice Log** | A recap of every call you join: who was there and how long they stayed |
+| **Media Lab** | Crop, resize and convert images. Trim and compress videos |
+| **Time Capsule** | Message reminders with scheduling and snooze |
+
+See all of them on [kittencord.pages.dev](https://kittencord.pages.dev/#plugins).
 
 ## 📥 Installing
 
-### 🪟 Windows
-
-1. Download [`KittencordSetup.exe`](https://github.com/xtufa7/KittenCord/releases/latest/download/KittencordSetup.exe).
-2. Run it, choose your Discord installation and click **Install / Repair**.
+1. Download KittenCord from **[kittencord.pages.dev](https://kittencord.pages.dev/#install)**.
+2. Run the setup, choose your Discord installation and click **Install / Repair**.
 3. Open Discord settings. KittenCord has its own section in the sidebar.
 
-Setup is small because it downloads KittenCord from the release and checks its SHA-256. It is not code-signed yet, so Windows SmartScreen may warn you.
-
-### 🌐 Browser
-
-<details>
-<summary><b>Chrome, Edge, Brave, Opera</b></summary>
-
-1. Download [`KittenCord-Chrome-Edge.zip`](https://github.com/xtufa7/KittenCord/releases/latest/download/KittenCord-Chrome-Edge.zip) and unzip it.
-2. Open `chrome://extensions` and turn on **Developer mode**.
-3. Click **Load unpacked**, pick the unzipped folder and open [discord.com](https://discord.com/app).
-
-</details>
-
-<details>
-<summary><b>Firefox</b></summary>
-
-1. Download [`KittenCord-Firefox.zip`](https://github.com/xtufa7/KittenCord/releases/latest/download/KittenCord-Firefox.zip).
-2. Open `about:debugging#/runtime/this-firefox` and click **Load Temporary Add-on**.
-3. Pick the zip and open [discord.com](https://discord.com/app). Firefox removes temporary add-ons when it closes.
-
-</details>
+To update, download the setup again and choose **Install / Repair**; your settings are kept. Setup is not code-signed yet, so Windows SmartScreen may warn you.
 
 ### 🗑️ Uninstalling
 
-Run `KittencordSetup.exe` again and choose **Restore**. Your KittenCord settings are kept in case you come back. In the browser, remove the extension.
+Run `KittencordSetup.exe` again and choose **Restore**. Your KittenCord settings are kept in case you come back.
 
 ## 🧑‍💻 Building from source
 
@@ -85,7 +69,6 @@ cd KittenCord
 pnpm install --frozen-lockfile
 pnpm build        # desktop
 pnpm inject       # install your build into Discord
-pnpm buildWeb     # browser extensions, written to dist/
 ```
 
 Want to help? Read [CONTRIBUTING.md](CONTRIBUTING.md).
