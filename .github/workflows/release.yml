@@ -38,4 +38,5 @@ jobs:
                       $(ls | grep -v -e '^NOTES.md$' -e '^\.git')
 
             - name: Remove the file branch
+              working-directory: files
               run: git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" --delete "release-files/$TAG"
